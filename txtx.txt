@@ -1,0 +1,93 @@
+import { useState, useEffect } from "react";
+const Manager = () => {
+  const [form, setForm] = useState({ site: "", username: "", password: "" });
+
+
+  const [passwordArray, setPasswordArray] = useState([]);
+
+  useEffect(() => {
+    const passwords = localStorage.getItem("passwords");
+    if (passwords) {
+      setPasswordArray(JSON.parse(passwords));
+    } else {
+      setPasswordArray([]);
+    }
+  }, []);
+  
+  const savePassword = () => {
+    console.log(form);
+    const updatedPasswords = [...passwordArray, form];
+    setPasswordArray(updatedPasswords);
+    localStorage.setItem("passwords", JSON.stringify(updatedPasswords));
+    console.log(updatedPasswords);
+    // Clear the form after saving (optional)
+    // setForm({ site: "", username: "", password: "" });
+  };
+  
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  return (
+    <>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_800px_at_100%_200px,#d5c5ff,transparent)]"></div>
+      </div>
+      <div className="container bg-purple-200 flex flex-col justify-center MyContainer">
+        <div className="flex flex-col items-center">
+          <h1 className="  font-bold text-2xl items-center">
+            {" "}
+            &lt;<span>Pass</span>
+            <span className="text-purple-500">Guard</span>/&gt;
+          </h1>
+          <p className="font-bold text-purple-500 text-xl overline">
+            Unlock Security, Simplified
+          </p>
+        </div>
+        <div className="text-white flex flex-col p-4 gap-2">
+          <input
+            value={form.site}
+            onChange={handleChange}
+            className="rounded-full border border-purple-500 text-black px-4 py-1"
+            type="text"
+            name="site"
+            id=""
+            placeholder="Enter Website's URL"
+          />
+          <div className="flex justify-center gap-2">
+            <input
+              value={form.username}
+              onChange={handleChange}
+              className="rounded-full border border-purple-500 text-black px-4 py-1 w-full"
+              type="text"
+              name="username"
+              placeholder="Enter Username"
+            />
+            <div className="relative">
+              <input
+                value={form.password}
+                onChange={handleChange}
+                className="rounded-full border border-purple-500 text-black px-4 py-1 w-full"
+                type="password"
+                name="password"
+                placeholder="Enter Password"
+              />
+            </div>
+          </div>
+          <button
+            onClick={savePassword}
+            className="flex justify-center items-center bg-purple-500 rounded-full px-4 py-1 hover:bg-purple-600"
+          >
+            <lord-icon
+              src="https://cdn.lordicon.com/jgnvfzqg.json"
+              trigger="loop"
+              colors="primary:#ffffff"
+            ></lord-icon>
+            Add Password
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Manager;
